@@ -1,3 +1,5 @@
+// Clase para generar los distintos tipos de activos de inversión
+
 class Asset {
     constructor(name, takeProfit, stopLoss) {
         this.name = name.toLowerCase();
@@ -6,6 +8,8 @@ class Asset {
     }
 }
 
+// Array de los activos de inversión
+
 const assets = [];
 
 assets.push(new Asset("bonos", 2, 0.5));
@@ -13,11 +17,15 @@ assets.push(new Asset("acciones", 10, 2.5));
 assets.push(new Asset("futuros", 20, 5));
 assets.push(new Asset("criptomonedas", 60, 30));
 
+// Funciones para calcular los niveles de riesgo predefinidos
+
 const highRisk = (value, time) => (((0.3*value)*(assets[0].takeProfit))+((0.15*value)*(assets[1].takeProfit))+((0.15*value)*(assets[2].takeProfit))+((0.4*value)*(assets[3].takeProfit)))*(time/365)+value
 
 const mediumRisk = (value, time) => (((0.5*value)*(assets[0].takeProfit))+((0.2*value)*(assets[1].takeProfit))+((0.15*value)*(assets[2].takeProfit))+((0.15*value)*(assets[3].takeProfit)))*(time/365)+value
 
 const lowRisk = (value, time) => (((0.7*value)*(assets[0].takeProfit))+((0.2*value)*(assets[1].takeProfit))+((0.1*value)*(assets[2].takeProfit))+((0*value)*(assets[3].takeProfit)))*(time/365)+value
+
+// Funciones para calcular los niveles de riesgo personalizados
 
 const customRisk = (value, time, bonds, shares, futures, cryptos) => ((((bonds/100)*value)*(assets[0].takeProfit))+(((shares/100)*value)*(assets[1].takeProfit))+(((futures/100)*value)*(assets[2].takeProfit))+(((cryptos/100)*value)*(assets[3].takeProfit)))*(time/365)+value
 
@@ -25,26 +33,59 @@ const customTP = (bonds, shares, futures, cryptos) => ((bonds*assets[0].takeProf
 
 const customSL = (bonds, shares, futures, cryptos) => ((bonds*assets[0].stopLoss)+(shares*assets[1].stopLoss)+(futures*assets[2].stopLoss)+(cryptos*assets[3].stopLoss))
 
-function profit(value, risk, time, bonds, shares, futures, cryptos) {
+// Función de resultado final a devolver
+
+function result(value, risk, time, bonds, shares, futures, cryptos) {
     switch(risk) {
         case "4":
-            alert(`Valor invertido: ${value} USD\nRiesgo: PERSONALIZADO (-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%)\nTake Profit Objetivo: ${customTP(bonds, shares, futures, cryptos).toFixed(2)}%\nTiempo de inversión: ${time} días\nValor recibido: ${customRisk(value,time, bonds, shares, futures, cryptos).toFixed(2)} USD`)
+            alert(`
+            Valor invertido: ${value} USD
+            Riesgo: PERSONALIZADO (-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%)
+            % de cartera por activo:${customs.map((asset) => " " + asset.name.toUpperCase() + ": " + asset.percentage + "%")}
+            Take Profit Objetivo: ${customTP(bonds, shares, futures, cryptos).toFixed(2)}%
+            Tiempo de inversión: ${time} días
+            Valor recibido: ${customRisk(value,time, bonds, shares, futures, cryptos).toFixed(2)} USD`)
             break
         case "3":
-            alert(`Valor invertido: ${value} USD\nRiesgo: ALTO (-13%)\nTake Profit Objetivo: 29.1%\nTiempo de inversión: ${time} días\nValor recibido: ${highRisk(value,time).toFixed(2)} USD`)
+            alert(`Valor invertido: ${value} USD
+            Riesgo: ALTO (-13%)
+            Take Profit Objetivo: 29.1%
+            Tiempo de inversión: ${time} días
+            Valor recibido: ${highRisk(value,time).toFixed(2)} USD`)
             break
         case "2":
-            alert(`Valor invertido: ${value} USD\nRiesgo: MEDIO (-6%)\nTake Profit Objetivo: 15%\nTiempo de inversión: ${time} días\nValor recibido: ${mediumRisk(value,time).toFixed(2)} USD`)
+            alert(`
+            Valor invertido: ${value} USD
+            Riesgo: MEDIO (-6%)
+            Take Profit Objetivo: 15%
+            Tiempo de inversión: ${time} días
+            Valor recibido: ${mediumRisk(value,time).toFixed(2)} USD`)
             break
         case "1":
-            alert(`Valor invertido: ${value} USD\nRiesgo: BAJO (-1%)\nTake Profit Objetivo: 5.4%\nTiempo de inversión: ${time} días\nValor recibido: ${lowRisk(value,time).toFixed(2)} USD`)
+            alert(`
+            Valor invertido: ${value} USD
+            Riesgo: BAJO (-1%)
+            Take Profit Objetivo: 5.4%
+            Tiempo de inversión: ${time} días
+            Valor recibido: ${lowRisk(value,time).toFixed(2)} USD`)
             break
         default:
             alert("Operacion no valida")
     }
 }
 
-let answer
+// Procedimiento para obtener información del usuario
+
+let answer, customs
+
+class AssetCustomPortfolio {
+    constructor(name, percentage) {
+        this.name = name.toLowerCase();
+        this.percentage = percentage;
+    }
+}
+
+const custom = [] // Array para guardar los porcentajes del value que quiere invertir el usuario en cada activo, en caso de elegir el modo personalizado.
 
 do {
     let value, risk, time, bonds, shares, futures, cryptos
@@ -85,10 +126,21 @@ do {
         }
     } while(((isNaN(value)) || (value < 1000) || (value > 1000000)) || (risk !== "4" && risk !== "3" && risk !== "2" && risk !== "1") ||((time < 30) || (time > 365)))
 
-    profit(value, risk, time, bonds, shares, futures, cryptos)
+    custom.push(new AssetCustomPortfolio("Bonos", bonds));
+    custom.push(new AssetCustomPortfolio("Acciones", shares));
+    custom.push(new AssetCustomPortfolio("Futuros", futures));
+    custom.push(new AssetCustomPortfolio("Criptomonedas", cryptos));
+    customs = custom.filter((asset) => asset.percentage > 0) // Si el usuario no quiere invertir nada en algún activo, aquí descarto el quede en 0%
+
+    result(value, risk, time, bonds, shares, futures, cryptos)
+
+    custom.splice(0, 4); // Si el usuario decide hacer una nueva operación, vacío el array para guardar la nueva respuesta
 
     do {
-        answer = prompt("¿Desea ingresar otra operacion?").toLowerCase()
+        answer = prompt("¿Desea calcular otra operacion?").toLowerCase()
     } while(answer != "si" && answer != "no")
 
 } while(answer != "no")
+
+
+
