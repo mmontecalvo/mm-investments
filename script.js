@@ -35,39 +35,97 @@ const customSL = (bonds, shares, futures, cryptos) => ((bonds*assets[0].stopLoss
 
 // Función de resultado final a devolver
 
+const container = document.getElementById("container")
+
 function result(value, risk, time, bonds, shares, futures, cryptos) {
     switch(risk) {
         case "4":
-            alert(`
-            Valor invertido: ${value} USD
-            Riesgo: PERSONALIZADO (-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%)
-            % de cartera por activo:${customs.map((asset) => " " + asset.name.toUpperCase() + ": " + asset.percentage + "%")}
-            Take Profit Objetivo: ${customTP(bonds, shares, futures, cryptos).toFixed(2)}%
-            Tiempo de inversión: ${time} días
-            Valor recibido: ${customRisk(value,time, bonds, shares, futures, cryptos).toFixed(2)} USD`)
+            container.innerHTML += `
+            <div class="card" style="width: 18rem;">
+                <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Valor invertido:</strong> ${value} USD</h5>
+                    <p class="card-text"><strong>Riesgo:</strong> PERSONALIZADO (-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%)</p>
+                    <p class="card-text"><strong>% de cartera por activo:</strong>${customs.map((asset) => " " + asset.name.toUpperCase() + ": " + asset.percentage + "%")}</p>
+                    <p class="card-text"><strong>Take Profit Objetivo:</strong> ${customTP(bonds, shares, futures, cryptos).toFixed(2)}%</p>
+                    <p class="card-text"><strong>Tiempo de inversión:</strong> ${time} días</p>
+                    <h6 class="card-title"><strong>Valor a recibir:</strong> ${customRisk(value,time, bonds, shares, futures, cryptos).toFixed(2)} USD</h6>
+                    <a href="#" class="btn btn-primary">Confirmar</a>
+                </div>
+            </div>
+            `
+            // alert(`
+            // Valor invertido: ${value} USD
+            // Riesgo: PERSONALIZADO (-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%)
+            // % de cartera por activo:${customs.map((asset) => " " + asset.name.toUpperCase() + ": " + asset.percentage + "%")}
+            // Take Profit Objetivo: ${customTP(bonds, shares, futures, cryptos).toFixed(2)}%
+            // Tiempo de inversión: ${time} días
+            // Valor recibido: ${customRisk(value,time, bonds, shares, futures, cryptos).toFixed(2)} USD`)
             break
         case "3":
-            alert(`Valor invertido: ${value} USD
-            Riesgo: ALTO (-13%)
-            Take Profit Objetivo: 29.1%
-            Tiempo de inversión: ${time} días
-            Valor recibido: ${highRisk(value,time).toFixed(2)} USD`)
+            container.innerHTML += `
+            <div class="card" style="width: 18rem;">
+                <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Valor invertido:</strong> ${value} USD</h5>
+                    <p class="card-text"><strong>Riesgo:</strong> ALTO (-13%)</p>
+                    <p class="card-text"><strong>% de cartera por activo:</strong> BONOS: 30%, ACCIONES: 15%, FUTUROS: 15%, CRIPTOMONEDAS: 40%</p>
+                    <p class="card-text"><strong>Take Profit Objetivo:</strong> 29.1%</p>
+                    <p class="card-text"><strong>Tiempo de inversión:</strong> ${time} días</p>
+                    <h6 class="card-title"><strong>Valor a recibir:</strong> ${highRisk(value,time).toFixed(2)} USD</h6>
+                    <a href="#" class="btn btn-primary">Confirmar</a>
+                </div>
+            </div>
+            `
+            // alert(`Valor invertido: ${value} USD
+            // Riesgo: ALTO (-13%)
+            // Take Profit Objetivo: 29.1%
+            // Tiempo de inversión: ${time} días
+            // Valor recibido: ${highRisk(value,time).toFixed(2)} USD`)
             break
         case "2":
-            alert(`
-            Valor invertido: ${value} USD
-            Riesgo: MEDIO (-6%)
-            Take Profit Objetivo: 15%
-            Tiempo de inversión: ${time} días
-            Valor recibido: ${mediumRisk(value,time).toFixed(2)} USD`)
+            container.innerHTML += `
+            <div class="card" style="width: 18rem;">
+                <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Valor invertido:</strong> ${value} USD</h5>
+                    <p class="card-text"><strong>Riesgo:</strong> MEDIO (-6%)</p>
+                    <p class="card-text"><strong>% de cartera por activo:</strong> BONOS: 50%, ACCIONES: 20%, FUTUROS: 15%, CRIPTOMONEDAS: 15%</p>
+                    <p class="card-text"><strong>Take Profit Objetivo:</strong> 15%</p>
+                    <p class="card-text"><strong>Tiempo de inversión:</strong> ${time} días</p>
+                    <h6 class="card-title"><strong>Valor a recibir:</strong> ${mediumRisk(value,time).toFixed(2)} USD</h6>
+                    <a href="#" class="btn btn-primary">Confirmar</a>
+                </div>
+            </div>
+            `
+            // alert(`
+            // Valor invertido: ${value} USD
+            // Riesgo: MEDIO (-6%)
+            // Take Profit Objetivo: 15%
+            // Tiempo de inversión: ${time} días
+            // Valor recibido: ${mediumRisk(value,time).toFixed(2)} USD`)
             break
         case "1":
-            alert(`
-            Valor invertido: ${value} USD
-            Riesgo: BAJO (-1%)
-            Take Profit Objetivo: 5.4%
-            Tiempo de inversión: ${time} días
-            Valor recibido: ${lowRisk(value,time).toFixed(2)} USD`)
+            container.innerHTML += `
+            <div class="card" style="width: 18rem;">
+                <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>Valor invertido:</strong> ${value} USD</h5>
+                    <p class="card-text"><strong>Riesgo:</strong> BAJO (-1%)</p>
+                    <p class="card-text"><strong>% de cartera por activo:</strong> BONOS: 70%, ACCIONES: 20%, FUTUROS: 10%</p>
+                    <p class="card-text"><strong>Take Profit Objetivo:</strong> 5.4%</p>
+                    <p class="card-text"><strong>Tiempo de inversión:</strong> ${time} días</p>
+                    <h6 class="card-title"><strong>Valor a recibir:</strong> ${lowRisk(value,time).toFixed(2)} USD</h6>
+                    <a href="#" class="btn btn-primary">Confirmar</a>
+                </div>
+            </div>
+            `
+            // alert(`
+            // Valor invertido: ${value} USD
+            // Riesgo: BAJO (-1%)
+            // Take Profit Objetivo: 5.4%
+            // Tiempo de inversión: ${time} días
+            // Valor recibido: ${lowRisk(value,time).toFixed(2)} USD`)
             break
         default:
             alert("Operacion no valida")
