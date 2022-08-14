@@ -1,0 +1,109 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    background: #000;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #webgl {
+    width: 800px;
+    height: 600px;
+    position: absolute;
+    z-index: -1;
+    bottom: 3rem;
+  }
+  
+  #webgl2 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    outline: none;
+    z-index: 2;
+    
+  }
+  
+  #bg-box {
+    width: 802px;
+    height: 601px;
+    position: absolute;
+    z-index: -1;
+    bottom: 3rem;
+  }
+  
+  .svg-box {
+    width: 600px;
+    height: 400px;
+    position: absolute;
+    z-index: 1;
+    bottom: 3rem;
+  }
+
+
+.info404 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem;
+    position: absolute;
+    top: 6rem;
+    margin: 0 auto;
+    z-index: 100;
+   
+    width: 100%;
+    height: 40%;
+}
+
+.info404 h2 {
+  font-family: 'Alfa Slab One', cursive;
+  color: var(--color-red);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+.info404 p {
+  color: var(--color-background);
+  font-size: var(--text-l);
+  font-weight: 600;
+}
+
+.info404 button {
+    font-size: var(--text-s);
+    padding: 0.7em 2.7em;
+    letter-spacing: 0.06em;
+    position: relative;
+    border-radius: 0.6em;
+    overflow: hidden;
+    transition: all 0.3s;
+    line-height: 1.4em;
+    border: 2px solid var(--color-primary);
+    background: linear-gradient(to right, rgba(1, 197, 206, 0.1) 1%, transparent 40%,transparent 60% , rgba(1, 197, 206, 0.1) 100%);
+    box-shadow: inset 0 0 10px rgba(1, 197, 206, 0.4), 0 0 9px 3px rgba(1, 197, 206, 0.1);
+    color: var(--color-primary);
+}
+
+.info404 button:hover {
+    color: var(--color-alternative);
+    border: 2px solid var(--color-alternative);
+    box-shadow: inset 0 0 10px rgba(1, 197, 206, 0.6), 0 0 9px 3px rgba(1, 197, 206, 0.2);
+}
+   
+.info404 button:before {
+    content: "";
+    position: absolute;
+    left: -4em;
+    width: 4em;
+    height: 100%;
+    top: 0;
+    transition: transform .4s ease-in-out;
+    background: linear-gradient(to right, transparent 1%, rgba(1, 197, 206, 0.1) 40%,rgba(1, 197, 206, 0.1) 60% , transparent 100%);
+}
+   
+.info404 button:hover:before {
+    transform: translateX(15em);
+}
