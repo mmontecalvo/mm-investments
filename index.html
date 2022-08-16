@@ -31,6 +31,7 @@
         </div>
     </header>
     <main class="main-content">
+        <div class="main-content__background"></div>
         <section id="banner" class="main-content__banner">
             <picture>
                 <img src="./img/logoBanner.png" alt="">
@@ -39,13 +40,49 @@
                 <a href="#defaultPlans">
                     <button>Nuestros Planes</button>
                 </a>
-                <a href="./404.html">
+                <a href="#customPlan">
                     <button>Plan Personalizado</button>
                 </a>
             </div>
         </section>
         <section id="defaultPlans" class="main-content__cards">
             <div id="container" class="row"></div>
+        </section>
+        <section id="customPlan" class="main-content__cards">
+            <div id="customCard" class="card custom-card">
+                <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
+                    <form id="idFormCustom">
+                        <div class="mb-3">
+                            <label for="inputValue" class="card-text"><strong>Valor a invertir: <span class="clarification">(USD)</span></strong></label>
+                            <input type="number" class="form-control card-text" id="inputCustomValue" placeholder="Entre $1,000 - $1,000,000" name="number" min="1000" max="1000000" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="inputMonths" class="card-text"><strong>Plazo de tiempo: <span class="clarification">(meses)</span></strong></label>
+                            <input type="number" class="form-control card-text" id="inputCustomMonths" placeholder="Entre 1 - 12 meses" name="number" min="1" max="12" step="1" required>
+                        </div>
+                        <h4 class="card-text"><strong>% de cartera por activo:</strong></h4>
+                        <div class="div-asset">
+                            <input type="number" class="form-control card-text input-asset" id="inputBonds" name="number" min="0" max="100" step="5" value="0">
+                            <label for="inputBonds" class="card-text">% Bonos</label>
+                        </div>
+                        <div class="div-asset">
+                            <input type="number" class="form-control card-text input-asset" id="inputShares" name="number" min="0" max="100" step="5" value="0">
+                            <label for="inputShares" class="card-text">% Acciones</label>
+                        </div>
+                        <div class="div-asset">
+                            <input type="number" class="form-control card-text input-asset" id="inputFutures" name="number" min="0" max="100" step="5" value="0">
+                            <label for="inputFutures" class="card-text">% Futuros</label>
+                        </div>
+                        <div class="div-asset">
+                            <input type="number" class="form-control card-text input-asset" id="inputCryptos" name="number" min="0" max="100" step="5" value="0">
+                            <label for="inputCryptos" class="card-text">% Criptomonedas</label>
+                        </div>
+                        <button type="submit" id="btnCalculateCustom" class="btn btn-primary">Calcular</button>
+                    </form>
+                </div>
+            </div>
         </section>
     </main>
     <script src="./script.js"></script>
