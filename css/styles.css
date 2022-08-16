@@ -316,3 +316,8 @@ a {
 .main-content__cards .custom-card .card-body .clarification--block {
     display: block;
 }
+
+.main-content__cards .custom-card .card-body .card-alert {
+    color: var(--color-red);
+    font-size: var(--text-s);
+}

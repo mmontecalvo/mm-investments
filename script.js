@@ -234,6 +234,44 @@ const customTP = (bonds, shares, futures, cryptos) => ((bonds*assets[0].takeProf
 
 const customSL = (bonds, shares, futures, cryptos) => ((bonds*assets[0].stopLoss)+(shares*assets[1].stopLoss)+(futures*assets[2].stopLoss)+(cryptos*assets[3].stopLoss));
 
+function verificador(value, months, bonds, shares, futures, cryptos){
+    if(bonds + shares + futures + cryptos !== 100){
+        customCard.innerHTML = `
+            <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
+                <span class="card-alert">¡El total de la suma de los porcentajes de cartera de cada activo debe ser igual a <strong>100%</strong>!</span>
+                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
+            </div>
+        `
+    } else {
+        idFormCustom.reset()
+        customCard.innerHTML = `
+            <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
+                <h4 class="card-text"><strong>Valor inicial:</strong></h4>
+                <span class="card-text">${value} USD</span>
+                <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
+                <span class="card-text">${months} meses</span>
+                <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(bonds, shares, futures, cryptos)}%</span></p>
+                <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(bonds, shares, futures, cryptos)}%</span></p>
+                <p class="card-text"><strong>% de cartera por activo:</strong></p>
+                <p class="card-text card-item"><strong>Bonos:</strong> ${bonds}%</p>
+                <p class="card-text card-item"><strong>Acciones</strong> ${shares}%</p>
+                <p class="card-text card-item"><strong>Futuros:</strong> ${futures}%</p>
+                <p class="card-text card-item"><strong>Criptomonedas:</strong> ${cryptos}%</p>
+                <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
+                <span class="card-text tp">${customRisk(value, months, bonds, shares, futures, cryptos)} USD</span>
+                <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
+                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
+                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+            </div>
+        `
+    }
+    
+}
+
 // Calcular plan personalizado
 
 const idFormCustom = document.getElementById("idFormCustom");
@@ -247,28 +285,30 @@ idFormCustom.addEventListener('submit', () => {
     const inputFutures = parseInt(document.getElementById("inputFutures").value);
     const inputCryptos = parseInt(document.getElementById("inputCryptos").value);
 
-    idFormCustom.reset()
+    verificador(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos)
 
-    customCard.innerHTML = `
-        <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
-            <h4 class="card-text"><strong>Valor inicial:</strong></h4>
-            <span class="card-text">${inputCustomValue} USD</span>
-            <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
-            <span class="card-text">${inputCustomMonths} meses</span>
-            <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(inputBonds, inputShares, inputFutures, inputCryptos)}%</span></p>
-            <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(inputBonds, inputShares, inputFutures, inputCryptos)}%</span></p>
-            <p class="card-text"><strong>% de cartera por activo:</strong></p>
-            <p class="card-text card-item"><strong>Bonos:</strong> ${inputBonds}%</p>
-            <p class="card-text card-item"><strong>Acciones</strong> ${inputShares}%</p>
-            <p class="card-text card-item"><strong>Futuros:</strong> ${inputFutures}%</p>
-            <p class="card-text card-item"><strong>Criptomonedas:</strong> ${inputCryptos}%</p>
-            <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-            <span class="card-text tp">${customRisk(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos)} USD</span>
-            <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
-            <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-            <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
-        </div>
-    `
+    // idFormCustom.reset()
+
+    // customCard.innerHTML = `
+    //     <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+    //     <div class="card-body">
+    //         <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
+    //         <h4 class="card-text"><strong>Valor inicial:</strong></h4>
+    //         <span class="card-text">${inputCustomValue} USD</span>
+    //         <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
+    //         <span class="card-text">${inputCustomMonths} meses</span>
+    //         <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(inputBonds, inputShares, inputFutures, inputCryptos)}%</span></p>
+    //         <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(inputBonds, inputShares, inputFutures, inputCryptos)}%</span></p>
+    //         <p class="card-text"><strong>% de cartera por activo:</strong></p>
+    //         <p class="card-text card-item"><strong>Bonos:</strong> ${inputBonds}%</p>
+    //         <p class="card-text card-item"><strong>Acciones</strong> ${inputShares}%</p>
+    //         <p class="card-text card-item"><strong>Futuros:</strong> ${inputFutures}%</p>
+    //         <p class="card-text card-item"><strong>Criptomonedas:</strong> ${inputCryptos}%</p>
+    //         <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
+    //         <span class="card-text tp">${customRisk(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos)} USD</span>
+    //         <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
+    //         <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
+    //         <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+    //     </div>
+    // `
 })
