@@ -1,4 +1,4 @@
-// Clase para generar los distintos tipos de activos de inversión
+// CLASE PARA GENERAR LOS ACTIVOS DE INVERSIÓN
 
 class Asset {
     constructor(name, takeProfit, stopLoss) {
@@ -8,7 +8,7 @@ class Asset {
     }
 }
 
-// Array de los activos de inversión
+// ARRAY DE LOS ACTIVOS DE INVERSIÓN
 
 const assets = [];
 
@@ -17,7 +17,7 @@ assets.push(new Asset("acciones", 10, 2.5));
 assets.push(new Asset("futuros", 20, 5));
 assets.push(new Asset("criptomonedas", 60, 30));
 
-// Clase para generar los planes de inversión predeterminados
+// CLASE PARA CREAR LOS PLANES DE INVERSIÓN PREDEFINIDOS
 
 class Plan {
     constructor(name, bonds, shares, futures, cryptos){
@@ -28,16 +28,18 @@ class Plan {
         this.cryptos = parseFloat(cryptos);
     }
 
+    // MÉTODO QUE CALCULA EL PORCENTAJE POTENCIAL DE GANANCIA DEL PLAN
     takeProfit(){
         return (this.bonds*assets[0].takeProfit)+(this.shares*assets[1].takeProfit)+(this.futures*assets[2].takeProfit)+(this.cryptos*assets[3].takeProfit)
     }
 
+    // MÉTODO QUE CALCULA EL PORCENTAJE POTENCIAL DE PÉRDIDA DEL PLAN
     stopLoss(){
         return (this.bonds*assets[0].stopLoss)+(this.shares*assets[1].stopLoss)+(this.futures*assets[2].stopLoss)+(this.cryptos*assets[3].stopLoss)
     }
 }
 
-// Array de planes de inversión
+// ARRAY DE PLANES DE INVERSIÓN PREDEFINIDOS
 
 const plans = [];
 
@@ -45,17 +47,38 @@ plans.push(new Plan("Riesgo bajo", 70, 20, 10, 0));
 plans.push(new Plan("Riesgo medio", 50, 20, 15, 15));
 plans.push(new Plan("Riesgo alto", 30, 15, 15, 40));
 
-// Funciones para calcular los niveles de riesgo predefinidos
+// FUNCIONES PARA CALCULAR EL DINERO POTENCIAL A RECIBIR SEGÚN CADA PLAN PREDEFINIDO
 
+// RIESGO BAJO
 const lowRisk = (value, time) => ((((plans[0].bonds/100*value)*(assets[0].takeProfit))+((plans[0].shares/100*value)*(assets[1].takeProfit))+((plans[0].futures/100*value)*(assets[2].takeProfit))+((plans[0].cryptos/100*value)*(assets[3].takeProfit)))*(time/12)+value).toFixed(2)
 
+// RIESGO MEDIO
 const mediumRisk = (value, time) => ((((plans[1].bonds/100*value)*(assets[0].takeProfit))+((plans[1].shares/100*value)*(assets[1].takeProfit))+((plans[1].futures/100*value)*(assets[2].takeProfit))+((plans[1].cryptos/100*value)*(assets[3].takeProfit)))*(time/12)+value).toFixed(2)
 
+// RIESGO ALTO
 const highRisk = (value, time) => ((((plans[2].bonds/100*value)*(assets[0].takeProfit))+((plans[2].shares/100*value)*(assets[1].takeProfit))+((plans[2].futures/100*value)*(assets[2].takeProfit))+((plans[2].cryptos/100*value)*(assets[3].takeProfit)))*(time/12)+value).toFixed(2)
 
-// Generación de cards
+// CONDICIONAL PARA APLICAR LA FUNCIÓN CORRESPONDIENTE A CADA PLAN PREDEFINIDO
+function riskCalculator(name, value, time){
+    let result = "";
+    if (name === "RIESGO BAJO"){
+        result = lowRisk(value, time);
+        return result;
+    } else if (name === "RIESGO MEDIO"){
+        result = mediumRisk(value, time);
+        return result;
+    } else if (name === "RIESGO ALTO"){
+        result = highRisk(value, time);
+        return result;
+    } else {
+        console.log("riskCalculator Error")
+    }
+}
+
+// GENERACIÓN DE CARDS DE LOS PLANES PREDEFINIDOS
 
 const container = document.getElementById("container");
+const cards =[] // ARRAY PARA GUARDAR EL NOMBRE (ID) DE CADA CARD, PARA LUEGO PODER APLICAR EL forEach()
 
 plans.forEach((card, index) => {
     container.innerHTML += `
@@ -75,165 +98,75 @@ plans.forEach((card, index) => {
             </div>
         </div>
     `
+    cards.push(`card${index}`)
 })
 
-// Abrir formulario para ingresar valores de consulta
+// CREACIÓN DEL FORMULARIO PARA INGRESAR LOS VALORES DE LA CONSULTA
 
-const btn0 = document.getElementById("btn0");
+cards.forEach((name, index) => {
+    const btn = document.getElementById(`btn${index}`);
+    const card = document.getElementById(name);
+    const planName = plans[index].name.toUpperCase(); // GUARDO NOMBRE DEL PLAN PARA PODER APLICAR LA FUNCIÓN DE RIESGO CORRESPONDIENTE
 
-btn0.addEventListener('click', () => {
-    card0.innerHTML = `
-        <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h3 class="card-title"><strong>RIESGO BAJO</strong></h3>
-            <form id="idForm0">
-                <div class="mb-3">
-                    <label for="input0Value" class="card-text"><strong>Valor a invertir: <span class="clarification">(USD)</span></strong></label>
-                    <input type="number" class="form-control card-text" id="input0Value" placeholder="Entre $1,000 - $1,000,000" name="number" min="1000" max="1000000" step="0.01" required>
-                </div>
-                <div class="mb-3">
-                    <label for="input0Months" class="card-text"><strong>Plazo de tiempo: <span class="clarification">(meses)</span></strong></label>
-                    <input type="number" class="form-control card-text" id="input0Months" placeholder="Entre 1 - 12 meses" name="number" min="1" max="12" step="1" required>
-                </div>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <button type="submit" id="btnCalculate0" class="btn btn-primary">Calcular</button>
-            </form>
-        </div>
-    `
-
-    // Calcular resultado final con los valores ingresados
-
-    const idForm0 = document.getElementById("idForm0");
-    let input0Value = "";
-    let input0Months = "";
-
-    idForm0.onsubmit = () => {
-        input0Value = parseFloat(document.getElementById("input0Value").value);
-        input0Months = parseInt(document.getElementById("input0Months").value);
-        card0.innerHTML = `
+    btn.addEventListener('click', () => {
+        card.innerHTML = `
             <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
             <div class="card-body">
-                <h3 class="card-title"><strong>RIESGO BAJO</strong></h3>
-                <h4 class="card-text"><strong>Valor inicial:</strong></h4>
-                <span class="card-text">${input0Value} USD</span>
-                <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
-                <span class="card-text">${input0Months} meses</span>
-                <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-                <span class="card-text tp">${lowRisk(input0Value, input0Months)} USD</span>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+                <h3 class="card-title"><strong>${planName}</strong></h3>
+                <form id="planForm${index}">
+                    <div class="mb-3">
+                        <label for="input${index}Value" class="card-text"><strong>Valor a invertir: <span class="clarification">(USD)</span></strong></label>
+                        <input type="number" class="form-control card-text" id="input${index}Value" placeholder="Entre $1,000 - $1,000,000" name="number" min="1000" max="1000000" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="input${index}Months" class="card-text"><strong>Plazo de tiempo: <span class="clarification">(meses)</span></strong></label>
+                        <input type="number" class="form-control card-text" id="input${index}Months" placeholder="Entre 1 - 12 meses" name="number" min="1" max="12" step="1" required>
+                    </div>
+                    <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
+                    <button type="submit" id="btnCalculate${index}" class="btn btn-primary">Calcular</button>
+                </form>
             </div>
         `
-    }
+    
+        // RESPUESTA AL USUARIO CON LOS VALORES INGRESADOS EN EL FORMULARIO
+    
+        const planForm = document.getElementById(`planForm${index}`);
+        let inputValue = "";
+        let inputMonths = "";
+    
+        planForm.onsubmit = () => {
+            inputValue = parseFloat(document.getElementById(`input${index}Value`).value);
+            inputMonths = parseInt(document.getElementById(`input${index}Months`).value);
+            card.innerHTML = `
+                <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h3 class="card-title"><strong>${planName}</strong></h3>
+                    <h4 class="card-text"><strong>Valor inicial:</strong></h4>
+                    <span class="card-text">${inputValue} USD</span>
+                    <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
+                    <span class="card-text">${inputMonths} meses</span>
+                    <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
+                    <span class="card-text tp">${riskCalculator(planName, inputValue, inputMonths)} USD</span>
+                    <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
+                    <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+                </div>
+            `
+        }
+    })
 })
 
+// FUNCIONES PARA CALCULAR UN PLAN PERSONALIZADO POR EL USUARIO
 
-const btn1 = document.getElementById("btn1");
-
-btn1.addEventListener('click', () => {
-    card1.innerHTML = `
-        <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h3 class="card-title"><strong>RIESGO MEDIO</strong></h3>
-            <form id="idForm1">
-                <div class="mb-3">
-                    <label for="input1Value" class="card-text"><strong>Valor a invertir: <span class="clarification">(USD)</span></strong></label>
-                    <input type="number" class="form-control card-text" id="input1Value" placeholder="Entre $1,000 - $1,000,000" name="number" min="1000" max="1000000" step="0.01" required>
-                </div>
-                <div class="mb-3">
-                    <label for="input1Months" class="card-text"><strong>Plazo de tiempo: <span class="clarification">(meses)</span></strong></label>
-                    <input type="number" class="form-control card-text" id="input1Months" placeholder="Entre 1 - 12 meses" name="number" min="1" max="12" step="1" required>
-                </div>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <button type="submit" id="btnCalculate1" class="btn btn-primary">Calcular</button>
-            </form>
-        </div>
-    `
-
-    // Calcular resultado final con los valores ingresados
-
-    const idForm1 = document.getElementById("idForm1");
-    let input1Value = "";
-    let input1Months = "";
-
-    idForm1.onsubmit = () => {
-        input1Value = parseFloat(document.getElementById("input1Value").value);
-        input1Months = parseInt(document.getElementById("input1Months").value);
-        card1.innerHTML = `
-            <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h3 class="card-title"><strong>RIESGO MEDIO</strong></h3>
-                <h4 class="card-text"><strong>Valor inicial:</strong></h4>
-                <span class="card-text">${input1Value} USD</span>
-                <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
-                <span class="card-text">${input1Months} meses</span>
-                <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-                <span class="card-text tp">${mediumRisk(input1Value, input1Months)} USD</span>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
-            </div>
-        `
-    }
-})
-
-
-const btn2 = document.getElementById("btn2");
-
-btn2.addEventListener('click', () => {
-    card2.innerHTML = `
-        <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-        <div class="card-body">
-            <h3 class="card-title"><strong>RIESGO ALTO</strong></h3>
-            <form id="idForm2">
-                <div class="mb-3">
-                    <label for="input2Value" class="card-text"><strong>Valor a invertir: <span class="clarification">(USD)</span></strong></label>
-                    <input type="number" class="form-control card-text" id="input2Value" placeholder="Entre $1,000 - $1,000,000" name="number" min="1000" max="1000000" step="0.01" required>
-                </div>
-                <div class="mb-3">
-                    <label for="input2Months" class="card-text"><strong>Plazo de tiempo: <span class="clarification">(meses)</span></strong></label>
-                    <input type="number" class="form-control card-text" id="input2Months" placeholder="Entre 1 - 12 meses" name="number" min="1" max="12" step="1" required>
-                </div>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <button type="submit" id="btnCalculate2" class="btn btn-primary">Calcular</button>
-            </form>
-        </div>
-    `
-
-    // Calcular resultado final con los valores ingresados
-
-    const idForm2 = document.getElementById("idForm2");
-    let input2Value = "";
-    let input2Months = "";
-
-    idForm2.onsubmit = () => {
-        input2Value = parseFloat(document.getElementById("input2Value").value);
-        input2Months = parseInt(document.getElementById("input2Months").value);
-        card2.innerHTML = `
-            <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h3 class="card-title"><strong>RIESGO ALTO</strong></h3>
-                <h4 class="card-text"><strong>Valor inicial:</strong></h4>
-                <span class="card-text">${input2Value} USD</span>
-                <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
-                <span class="card-text">${input2Months} meses</span>
-                <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-                <span class="card-text tp">${highRisk(input2Value, input2Months)} USD</span>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
-            </div>
-         `
-    }
-})
-
-
-// Funciones para calcular el plan personalizado
-
+// FUNCIÓN PARA CALCULAR EL DINERO POTENCIAL A RECIBIR
 const customRisk = (value, time, bonds, shares, futures, cryptos) => ((((bonds/100)*value)*(assets[0].takeProfit))+(((shares/100)*value)*(assets[1].takeProfit))+(((futures/100)*value)*(assets[2].takeProfit))+(((cryptos/100)*value)*(assets[3].takeProfit)))*(time/12)+value;
 
+// FUNCIÓN QUE CALCULA EL PORCENTAJE POTENCIAL DE GANANCIA DEL PLAN
 const customTP = (bonds, shares, futures, cryptos) => ((bonds*assets[0].takeProfit)+(shares*assets[1].takeProfit)+(futures*assets[2].takeProfit)+(cryptos*assets[3].takeProfit));
 
+// FUNCIÓN QUE CALCULA EL PORCENTAJE POTENCIAL DE PÉRDIDA DEL PLAN
 const customSL = (bonds, shares, futures, cryptos) => ((bonds*assets[0].stopLoss)+(shares*assets[1].stopLoss)+(futures*assets[2].stopLoss)+(cryptos*assets[3].stopLoss));
 
+// VERIFICADOR PARA COMPROBAR QUE LA SUMA DE LOS PORCENTAJES INGRESADOS POR EL USUARIO DE 100%
 function verificador(value, months, bonds, shares, futures, cryptos){
     if(bonds + shares + futures + cryptos !== 100){
         customCard.innerHTML = `
@@ -244,8 +177,8 @@ function verificador(value, months, bonds, shares, futures, cryptos){
                 <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
             </div>
         `
-    } else {
-        idFormCustom.reset()
+    } else { // SI LOS DATOS SON CORRECTOS RESETEO EL FORM Y CREO LA CARD DEL RESULTADO DE LA CONSULTA
+        customForm.reset()
         customCard.innerHTML = `
             <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
             <div class="card-body">
@@ -254,15 +187,15 @@ function verificador(value, months, bonds, shares, futures, cryptos){
                 <span class="card-text">${value} USD</span>
                 <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
                 <span class="card-text">${months} meses</span>
-                <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(bonds, shares, futures, cryptos)}%</span></p>
-                <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(bonds, shares, futures, cryptos)}%</span></p>
+                <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(bonds, shares, futures, cryptos).toFixed(2)}%</span></p>
+                <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%</span></p>
                 <p class="card-text"><strong>% de cartera por activo:</strong></p>
                 <p class="card-text card-item"><strong>Bonos:</strong> ${bonds}%</p>
                 <p class="card-text card-item"><strong>Acciones</strong> ${shares}%</p>
                 <p class="card-text card-item"><strong>Futuros:</strong> ${futures}%</p>
                 <p class="card-text card-item"><strong>Criptomonedas:</strong> ${cryptos}%</p>
                 <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-                <span class="card-text tp">${customRisk(value, months, bonds, shares, futures, cryptos)} USD</span>
+                <span class="card-text tp">${customRisk(value, months, bonds, shares, futures, cryptos).toFixed(2)} USD</span>
                 <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
                 <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
                 <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
@@ -272,43 +205,20 @@ function verificador(value, months, bonds, shares, futures, cryptos){
     
 }
 
-// Calcular plan personalizado
+// FUNCIONALIDAD DEL FORMULARIO DE LA CARD DE RIESGO PERSONALIZADO
 
-const idFormCustom = document.getElementById("idFormCustom");
+const customForm = document.getElementById("customForm");
 const customCard = document.getElementById("customCard");
 
-idFormCustom.addEventListener('submit', () => {
-    const inputCustomValue = parseFloat(document.getElementById("inputCustomValue").value);
-    const inputCustomMonths = parseInt(document.getElementById("inputCustomMonths").value);
-    const inputBonds = parseInt(document.getElementById("inputBonds").value);
-    const inputShares = parseInt(document.getElementById("inputShares").value);
-    const inputFutures = parseInt(document.getElementById("inputFutures").value);
-    const inputCryptos = parseInt(document.getElementById("inputCryptos").value);
+customForm.addEventListener('submit', (e) => {
+    const dataForm = new FormData(e.target)
+    // PASO LOS DATOS DEL FORMULARIO A FORMATO DE NÚMEROS PARA EL VERIFICADOR
+    const inputCustomValue = parseFloat(dataForm.get("value"));
+    const inputCustomMonths = parseInt(dataForm.get("months"));
+    const inputBonds = parseInt(dataForm.get("inputBonds"));
+    const inputShares = parseInt(dataForm.get("inputShares"));
+    const inputFutures = parseInt(dataForm.get("inputFutures"));
+    const inputCryptos = parseInt(dataForm.get("inputCryptos"));
 
-    verificador(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos)
-
-    // idFormCustom.reset()
-
-    // customCard.innerHTML = `
-    //     <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
-    //     <div class="card-body">
-    //         <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
-    //         <h4 class="card-text"><strong>Valor inicial:</strong></h4>
-    //         <span class="card-text">${inputCustomValue} USD</span>
-    //         <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
-    //         <span class="card-text">${inputCustomMonths} meses</span>
-    //         <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(inputBonds, inputShares, inputFutures, inputCryptos)}%</span></p>
-    //         <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(inputBonds, inputShares, inputFutures, inputCryptos)}%</span></p>
-    //         <p class="card-text"><strong>% de cartera por activo:</strong></p>
-    //         <p class="card-text card-item"><strong>Bonos:</strong> ${inputBonds}%</p>
-    //         <p class="card-text card-item"><strong>Acciones</strong> ${inputShares}%</p>
-    //         <p class="card-text card-item"><strong>Futuros:</strong> ${inputFutures}%</p>
-    //         <p class="card-text card-item"><strong>Criptomonedas:</strong> ${inputCryptos}%</p>
-    //         <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-    //         <span class="card-text tp">${customRisk(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos)} USD</span>
-    //         <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
-    //         <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-    //         <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
-    //     </div>
-    // `
+    verificador(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos);
 })
