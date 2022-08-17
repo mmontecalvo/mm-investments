@@ -302,14 +302,14 @@ a {
     width: 40rem;
 }
 
-.main-content__cards .custom-card .card-body #idFormCustom .div-asset {
+.main-content__cards .custom-card .card-body #customForm .div-asset {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 1rem;
 }
 
-.main-content__cards .custom-card .card-body #idFormCustom .div-asset .input-asset {
+.main-content__cards .custom-card .card-body #customForm .div-asset .input-asset {
     width: 8rem;
 }
 
