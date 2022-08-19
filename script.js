@@ -91,13 +91,7 @@ class Consultation {
     }
 }
 
-let consultations = []
-
-if(localStorage.getItem('consultations')) {
-    tareas =  JSON.parse(localStorage.getItem('consultations'));
-} else {
-    localStorage.setItem('consultations', JSON.stringify(consultations));
-}
+const consultations =  JSON.parse(localStorage.getItem("consultations")) ?? []
 
 // GENERACIÓN DE CARDS DE LOS PLANES PREDEFINIDOS
 
@@ -285,9 +279,9 @@ historyBtn.addEventListener('click', () => {
         const historyCard = document.getElementById(`historyCard${index}`)
 
         historyCard.children[0].children[13].addEventListener('click', () => {
-            historyCard.remove() //DOM
-            consultations.splice(index, 1) //Array
-            localStorage.setItem('consultations', JSON.stringify(consultations)) //Local storage
+            historyCard.remove() // DOM
+            consultations.splice(index, 1) // ARRAY
+            localStorage.setItem('consultations', JSON.stringify(consultations)) // LOCAL STORAGE
         })
     })
 })

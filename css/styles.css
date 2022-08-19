@@ -298,6 +298,11 @@ a {
 
 /* CUSTOM PLAN */
 
+.main-content__cards {
+    display: flex;
+    flex-direction: column;
+}
+
 .main-content__cards .custom-card {
     width: 40rem;
 }
@@ -321,3 +326,13 @@ a {
     color: var(--color-red);
     font-size: var(--text-s);
 }
+
+.main-content__cards--row {
+    display: flex;
+    flex-direction: row;
+    margin: 1rem auto;
+    gap: 1rem;
+    justify-content:center;
+    align-items: center;
+}
+
