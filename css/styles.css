@@ -33,6 +33,7 @@ html {
 
 body {
     font-family: 'Raleway', sans-serif;
+    background: var(--color-primary);
 }
   
 ul {
@@ -54,7 +55,7 @@ a {
     min-height: 8vh;
     height: 6rem;
     width: 100%;
-    background: var(--color-primary);
+    background: #014776c0;
 }
 
 .navbar .container-fluid {
@@ -244,7 +245,6 @@ a {
 
 .main-content__cards .card .card-body .clarification {
     color: gray;
-    margin: 1rem 0;
     font-weight: normal;
 }
 

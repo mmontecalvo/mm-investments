@@ -669,9 +669,7 @@ function animation() {
     renderer2.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer2.setClearColor(0xffffff, 0);
   
-    /**
-     * Animate
-     */
+    /* Animate */
     const clock = new THREE.Clock();
   
     let currentIntersect = null;

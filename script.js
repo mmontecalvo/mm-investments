@@ -75,6 +75,30 @@ function riskCalculator(name, value, time){
     }
 }
 
+// CREACIÓN/CONSULTA DEL STORAGE
+
+class Consultation {
+    constructor(value, time, tp, sl, bonds, shares, futures, cryptos, result) {
+        this.value = value;
+        this.time = time;
+        this.tp = tp;
+        this.sl = sl;
+        this.bonds = bonds;
+        this.shares = shares;
+        this.futures = futures;
+        this.cryptos = cryptos;
+        this.result = result;
+    }
+}
+
+let consultations = []
+
+if(localStorage.getItem('consultations')) {
+    tareas =  JSON.parse(localStorage.getItem('consultations'));
+} else {
+    localStorage.setItem('consultations', JSON.stringify(consultations));
+}
+
 // GENERACIÓN DE CARDS DE LOS PLANES PREDEFINIDOS
 
 const container = document.getElementById("container");
@@ -170,7 +194,6 @@ const customSL = (bonds, shares, futures, cryptos) => ((bonds*assets[0].stopLoss
 function verificador(value, months, bonds, shares, futures, cryptos){
     if(bonds + shares + futures + cryptos !== 100){
         customCard.innerHTML = `
-            <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
             <div class="card-body">
                 <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
                 <span class="card-alert">¡El total de la suma de los porcentajes de cartera de cada activo debe ser igual a <strong>100%</strong>!</span>
@@ -180,13 +203,10 @@ function verificador(value, months, bonds, shares, futures, cryptos){
     } else { // SI LOS DATOS SON CORRECTOS RESETEO EL FORM Y CREO LA CARD DEL RESULTADO DE LA CONSULTA
         customForm.reset()
         customCard.innerHTML = `
-            <img src="https://profesionalesyempresarios.com/wp-content/uploads/2022/04/motivosparainvertr.jpg" class="card-img-top" alt="...">
             <div class="card-body">
                 <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
-                <h4 class="card-text"><strong>Valor inicial:</strong></h4>
-                <span class="card-text">${value} USD</span>
-                <h4 class="card-text"><strong>Tiempo de inversión:</strong></h4>
-                <span class="card-text">${months} meses</span>
+                <h4 class="card-text"><strong>Valor inicial:</strong> <span class="card-text">${value} USD</span></h4>
+                <h4 class="card-text"><strong>Tiempo de inversión:</strong> <span class="card-text">${months} meses</span></h4>
                 <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${customTP(bonds, shares, futures, cryptos).toFixed(2)}%</span></p>
                 <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${customSL(bonds, shares, futures, cryptos).toFixed(2)}%</span></p>
                 <p class="card-text"><strong>% de cartera por activo:</strong></p>
@@ -194,13 +214,18 @@ function verificador(value, months, bonds, shares, futures, cryptos){
                 <p class="card-text card-item"><strong>Acciones</strong> ${shares}%</p>
                 <p class="card-text card-item"><strong>Futuros:</strong> ${futures}%</p>
                 <p class="card-text card-item"><strong>Criptomonedas:</strong> ${cryptos}%</p>
-                <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
-                <span class="card-text tp">${customRisk(value, months, bonds, shares, futures, cryptos).toFixed(2)} USD</span>
+                <h4 class="card-text"><strong>Valor a recibir:</strong> <span class="card-text tp">${customRisk(value, months, bonds, shares, futures, cryptos).toFixed(2)} USD</span></h4>
                 <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
                 <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
                 <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
             </div>
         `
+        // ACTUALIZACIÓN DEL STORAGE
+        const consultation = new Consultation(value, months, customTP(bonds, shares, futures, cryptos).toFixed(2), customSL(bonds, shares, futures, cryptos).toFixed(2), bonds, shares, futures, cryptos, customRisk(value, months, bonds, shares, futures, cryptos).toFixed(2));
+
+        consultations.push(consultation);
+
+        localStorage.setItem('consultations', JSON.stringify(consultations));
     }
     
 }
@@ -221,4 +246,48 @@ customForm.addEventListener('submit', (e) => {
     const inputCryptos = parseInt(dataForm.get("inputCryptos"));
 
     verificador(inputCustomValue, inputCustomMonths, inputBonds, inputShares, inputFutures, inputCryptos);
+})
+
+// CARD DE ÚLTIMA CONSULTA REALIZADA POR EL USUARIO
+
+const historyBtn = document.getElementById("historyBtn")
+const history = document.getElementById("history")
+
+historyBtn.addEventListener('click', () => {
+    const arrayStorage = JSON.parse(localStorage.getItem('consultations'))
+
+    history.innerHTML = ""
+
+    arrayStorage.forEach((consultation, index) => {
+        history.innerHTML += `
+        <div id="historyCard${index}" class="card custom-card">
+            <div class="card-body">
+                <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
+                <h4 class="card-text"><strong>Valor inicial:</strong> <span class="card-text">${consultation.value} USD</span></h4>
+                <h4 class="card-text"><strong>Tiempo de inversión:</strong> <span class="card-text">${consultation.time} meses</span></h4>
+                <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${consultation.tp}%</span></p>
+                <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${consultation.sl}%</span></p>
+                <p class="card-text"><strong>% de cartera por activo:</strong></p>
+                <p class="card-text card-item"><strong>Bonos:</strong> ${consultation.bonds}%</p>
+                <p class="card-text card-item"><strong>Acciones</strong> ${consultation.shares}%</p>
+                <p class="card-text card-item"><strong>Futuros:</strong> ${consultation.futures}%</p>
+                <p class="card-text card-item"><strong>Criptomonedas:</strong> ${consultation.cryptos}%</p>
+                <h4 class="card-text"><strong>Valor a recibir:</strong> <span class="card-text tp">${consultation.result} USD</span></h4>
+                <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
+                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+                <button id="eliminate" class="btn btn-primary">Eliminar</button>
+            </div>
+        </div>
+    `
+    })
+
+    arrayStorage.forEach((consultation, index) => {
+        const historyCard = document.getElementById(`historyCard${index}`)
+
+        historyCard.children[0].children[13].addEventListener('click', () => {
+            historyCard.remove() //DOM
+            consultations.splice(index, 1) //Array
+            localStorage.setItem('consultations', JSON.stringify(consultations)) //Local storage
+        })
+    })
 })
