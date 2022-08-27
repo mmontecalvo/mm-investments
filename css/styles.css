@@ -68,7 +68,6 @@ a {
     position: fixed;
     top: 0;
     z-index: 1000;
-    min-height: 8vh;
     height: 6rem;
     width: 100%;
     background: #014776c0;
@@ -84,6 +83,7 @@ a {
 }
 
 #header .navbar img {
+    margin-left: 2rem;
     height: 4rem;
     transition: .5s ease;
 }
@@ -147,6 +147,7 @@ a {
 .main-content__background {
     background-image: url('../img/backgroundBanner1.jpg');
     background-size: cover;
+    background-position: center;
     position: fixed;
     z-index: -1;
     width: 100%;
@@ -160,7 +161,7 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 92vh;
+    height: 100vh;
     padding-top: 6rem;
 }
 
@@ -231,6 +232,7 @@ a {
     padding: 0;
     margin: 0 1rem;
     width: 30rem;
+    max-width: 94vw;
     border: 2px solid var(--color-alternative);
     background: var(--color-background);
     color: var(--color-primary);
@@ -400,10 +402,16 @@ a {
 .main-content__login .main-content__form form .form__write .form-floating .form-control:focus {
     box-shadow: 0 0 1rem 0.2rem var(--color-alternative); 
 }
+
+.main-content__login .main-content__form form .form-check {
+    display: flex; 
+}
      
 .main-content__login .main-content__form form .form-check .form-check-input {
     height: 1.6rem;
-    width: 1.6rem; 
+    min-height: 1rem;
+    width: 1.6rem;
+    min-width: 1rem;
 }
 
 .main-content__login .main-content__form form .form-answer {
@@ -438,6 +446,10 @@ a {
     line-height: 1.5em;
     padding-left: 1rem;
     margin-bottom: 2rem; 
+}
+
+.main-content__login .main-content__form form .form-check .form__textcheckbox strong {
+    text-decoration: underline;
 }
      
 .main-content__login  .main-content__form form .form__btn {
@@ -485,3 +497,114 @@ a {
     cursor: pointer;
     opacity: 1;
 }
+
+@media screen and (max-width: 991px) {
+    .main-content .main-content__banner {
+        width: 100vw;
+        padding-top: 3rem;
+    }
+
+    .main-content .main-content__banner img {
+        width: 94vw;
+        margin: 0 auto;
+    }
+
+    .row {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main-content__cards .card {
+        margin: 1rem;
+        justify-self: center;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .main-content .main-content__banner .banner__btns{
+        flex-direction: column;
+        gap: 2rem;
+        margin: 2rem;
+    }
+
+    .main-content__banner button {
+        width: 86vw;
+    }
+}
+
+@media screen and (max-width: 575px) {
+    #header {
+        height: 4rem;
+    }
+    
+    #header .navbar img {
+        margin-left: 2rem;
+        height: 3rem;
+    }
+    
+    #header .navbar .nav-link__btn {
+        padding: 0.4rem 1rem;
+        font-size: var(--text-s);
+    }
+
+    .main-content__banner button {
+        font-size: var(--text-base);
+        letter-spacing: 0;
+    }
+
+    .main-content__cards .card img {
+        height: 12rem;
+    }
+
+    .main-content__cards .card .card-body .card-title {
+        font-size: var(--text-m);
+    }
+
+    .main-content__cards .card .card-body .card-text {
+        font-size: var(--text-base);
+    }
+
+    .main-content__cards .card .card-body .card-item {
+        font-size: var(--text-xs);
+        margin-left: 2rem;
+    }
+
+    .main-content__cards .card .card-body .sl {
+        font-size: var(--text-xs);
+    }
+
+    .main-content__cards .card .card-body .btn {
+        font-size: var(--text-base);
+        padding: 0.7rem;
+    }
+
+    .main-content__cards--row {
+        margin: 0;
+    }
+
+    .main-content__login .main-content__form form .form__write .form-floating .contact__box {
+        height: 5rem;
+    }
+
+    .main-content__login .main-content__form form .form-answer {
+        font-size: var(--text-xs);
+        bottom: 18.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

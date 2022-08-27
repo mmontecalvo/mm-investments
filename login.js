@@ -34,8 +34,8 @@ btnRegister.onclick = () => {
             </div>
         </div>
         <div class="form-check">
-            <input id="checkbox" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-            <label class="form-check-label form__textcheckbox" for="flexCheckDefault">
+            <input id="checkbox" class="form-check-input" type="checkbox" value="">
+            <label class="form-check-label form__textcheckbox" for="checkbox">
                 Acepto las <a href="./404.html"><strong>políticas de privacidad</strong></a> y los <a href="./404.html"><strong>términos y condiciones</strong></a>.
             </label>
         </div>
