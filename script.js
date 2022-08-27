@@ -119,6 +119,25 @@ plans.forEach((card, index) => {
     cards.push(`card${index}`)
 })
 
+// FOR PARA GENERAR ALERTA EN LOS BOTONES DE CONFIRMAR OPERACIÓN
+function btnAlert(array){
+    for (let i = 0; i < array.length; i++) {
+        array[i].onclick = () => {
+            Swal.fire({
+                html:
+                '<p class="alert-text">Para confirmar la operación debes ingresar a tu cuenta.</P>',
+                icon: 'warning',
+                iconColor: '#01C5CE',
+                showCancelButton: true,
+                confirmButtonColor: '#014776',
+                cancelButtonColor: '#01C5CE',
+                confirmButtonText: '<a class="alert-btn" href="./login.html">Ingresar</a>',
+                cancelButtonText: '<span class="alert-btn">Volver</span>'
+            })
+        }
+    }
+}
+
 // CREACIÓN DEL FORMULARIO PARA INGRESAR LOS VALORES DE LA CONSULTA
 
 cards.forEach((name, index) => {
@@ -166,9 +185,12 @@ cards.forEach((name, index) => {
                     <h4 class="card-text"><strong>Valor a recibir:</strong></h4>
                     <span class="card-text tp">${riskCalculator(planName, inputValue, inputMonths)} USD</span>
                     <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                    <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+                    <button class="confirmOp btn btn-primary">Confirmar Operación</button>
                 </div>
             `
+            // GENERO ALERTA PARA LOS BOTONES DE CONFIRMAR OPERACIÓN
+            const confirmOp = document.getElementsByClassName('confirmOp');
+            btnAlert(confirmOp);
         }
     })
 })
@@ -187,13 +209,18 @@ const customSL = (bonds, shares, futures, cryptos) => ((bonds*assets[0].stopLoss
 // VERIFICADOR PARA COMPROBAR QUE LA SUMA DE LOS PORCENTAJES INGRESADOS POR EL USUARIO DE 100%
 function verificador(value, months, bonds, shares, futures, cryptos){
     if(bonds + shares + futures + cryptos !== 100){
-        customCard.innerHTML = `
-            <div class="card-body">
-                <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
-                <span class="card-alert">¡El total de la suma de los porcentajes de cartera de cada activo debe ser igual a <strong>100%</strong>!</span>
-                <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-            </div>
-        `
+        Swal.fire({
+            html:
+            '<h3 class="alert-title"><strong>ERROR</strong></h3>' +
+            '<p class="alert-text">¡El total de la suma de los porcentajes de cartera de cada activo debe ser igual a <strong>100%</strong>!</P>',
+            icon: 'error',
+            iconColor: '#AF173B',
+            showCancelButton: false,
+            confirmButtonColor: '#014776',
+            confirmButtonText: '<span class="alert-btn">Ok</span>',
+            width: '50rem',
+        })
+        customForm.reset()
     } else { // SI LOS DATOS SON CORRECTOS RESETEO EL FORM Y CREO LA CARD DEL RESULTADO DE LA CONSULTA
         customForm.reset()
         customCard.innerHTML = `
@@ -211,9 +238,13 @@ function verificador(value, months, bonds, shares, futures, cryptos){
                 <h4 class="card-text"><strong>Valor a recibir:</strong> <span class="card-text tp">${customRisk(value, months, bonds, shares, futures, cryptos).toFixed(2)} USD</span></h4>
                 <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
                 <button id="resetCard" class="btn btn-primary" onclick="location.reload();">Volver</button>
-                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
+                <button class="confirmOp btn btn-primary">Confirmar Operación</button>
             </div>
         `
+        // GENERO ALERTA PARA LOS BOTONES DE CONFIRMAR OPERACIÓN
+        const confirmOp = document.getElementsByClassName('confirmOp');
+        btnAlert(confirmOp);
+
         // ACTUALIZACIÓN DEL STORAGE
         const consultation = new Consultation(value, months, customTP(bonds, shares, futures, cryptos).toFixed(2), customSL(bonds, shares, futures, cryptos).toFixed(2), bonds, shares, futures, cryptos, customRisk(value, months, bonds, shares, futures, cryptos).toFixed(2));
 
@@ -230,6 +261,7 @@ const customForm = document.getElementById("customForm");
 const customCard = document.getElementById("customCard");
 
 customForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     const dataForm = new FormData(e.target)
     // PASO LOS DATOS DEL FORMULARIO A FORMATO DE NÚMEROS PARA EL VERIFICADOR
     const inputCustomValue = parseFloat(dataForm.get("value"));
@@ -254,31 +286,43 @@ historyBtn.addEventListener('click', () => {
 
     arrayStorage.forEach((consultation, index) => {
         history.innerHTML += `
-        <div id="historyCard${index}" class="card custom-card">
-            <div class="card-body">
-                <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
-                <h4 class="card-text"><strong>Valor inicial:</strong> <span class="card-text">${consultation.value} USD</span></h4>
-                <h4 class="card-text"><strong>Tiempo de inversión:</strong> <span class="card-text">${consultation.time} meses</span></h4>
-                <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${consultation.tp}%</span></p>
-                <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${consultation.sl}%</span></p>
-                <p class="card-text"><strong>% de cartera por activo:</strong></p>
-                <p class="card-text card-item"><strong>Bonos:</strong> ${consultation.bonds}%</p>
-                <p class="card-text card-item"><strong>Acciones</strong> ${consultation.shares}%</p>
-                <p class="card-text card-item"><strong>Futuros:</strong> ${consultation.futures}%</p>
-                <p class="card-text card-item"><strong>Criptomonedas:</strong> ${consultation.cryptos}%</p>
-                <h4 class="card-text"><strong>Valor a recibir:</strong> <span class="card-text tp">${consultation.result} USD</span></h4>
-                <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
-                <a id="confirmOp" class="btn btn-primary" href="./404.html">Confirmar Operación</a>
-                <button id="eliminate" class="btn btn-primary">Eliminar</button>
+            <div id="historyCard${index}" class="card custom-card">
+                <div class="card-body">
+                    <h3 class="card-title"><strong>RIESGO PERSONALIZADO</strong></h3>
+                    <h4 class="card-text"><strong>Valor inicial:</strong> <span class="card-text">${consultation.value} USD</span></h4>
+                    <h4 class="card-text"><strong>Tiempo de inversión:</strong> <span class="card-text">${consultation.time} meses</span></h4>
+                    <p class="card-text"><strong>Take Profit Objetivo<span class="clarification">*</span>:</strong> <span class="tp">${consultation.tp}%</span></p>
+                    <p class="card-text"><strong>Riesgo<span class="clarification">*</span>:</strong> <span class="sl">-${consultation.sl}%</span></p>
+                    <p class="card-text"><strong>% de cartera por activo:</strong></p>
+                    <p class="card-text card-item"><strong>Bonos:</strong> ${consultation.bonds}%</p>
+                    <p class="card-text card-item"><strong>Acciones</strong> ${consultation.shares}%</p>
+                    <p class="card-text card-item"><strong>Futuros:</strong> ${consultation.futures}%</p>
+                    <p class="card-text card-item"><strong>Criptomonedas:</strong> ${consultation.cryptos}%</p>
+                    <h4 class="card-text"><strong>Valor a recibir:</strong> <span class="card-text tp">${consultation.result} USD</span></h4>
+                    <span class="clarification clarification--block">(*) Tasa Nominal Anual</span>
+                    <button class="confirmOp btn btn-primary">Confirmar Operación</button>
+                    <button id="eliminate" class="btn btn-primary">Eliminar</button>
+                </div>
             </div>
-        </div>
-    `
+        `
+        // GENERO ALERTA PARA LOS BOTONES DE CONFIRMAR OPERACIÓN
+        const confirmOp = document.getElementsByClassName('confirmOp');
+        btnAlert(confirmOp);  
     })
 
     arrayStorage.forEach((consultation, index) => {
         const historyCard = document.getElementById(`historyCard${index}`)
 
         historyCard.children[0].children[13].addEventListener('click', () => {
+            Toastify({
+                text: "Operación eliminada.",
+                className: "alert-text",
+                style: {
+                  background: "#AF173B",
+                  color: "#E7E7E7",
+                }
+            }).showToast();
+
             historyCard.remove() // DOM
             consultations.splice(index, 1) // ARRAY
             localStorage.setItem('consultations', JSON.stringify(consultations)) // LOCAL STORAGE
