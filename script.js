@@ -1,5 +1,5 @@
 // HEADER DE PRECIOS DE ACTIVOS
-Access-Control-Allow-Origin: https://api.tiingo.com/
+
 const assetPrices = document.getElementById('assetPrices');
 const keyToken = "9a105e96895f672842db646035a5851e0c76fc2d";
 const imgShares = ["https://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png","https://www.pngmart.com/files/10/Tesla-Logo-PNG-Clipart.png"];
