@@ -143,6 +143,64 @@ a {
     color: var(--color-primary);
 }
 
+/* ASSET PRICES */
+
+#assetPrices {
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    height: 6rem;
+    margin-top: 6rem;
+    background-color: #01C5CEc0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+#assetPrices .asset {
+    position: relative;
+    height: 5rem;
+    padding-right: 0.5rem;
+    /* width: 14rem; */
+    border-radius: 1rem;
+    background: var(--color-background);
+    display: grid;
+    grid-template-areas:
+    "logo ticker ticker"
+    "logo price price";
+    place-items: center;
+}
+
+#assetPrices .asset .asset__logo {
+    grid-area: logo;
+    height: 4rem;
+    width: 4rem;
+    border-radius: 0.8rem;
+    background: var(--color-alternative);
+    display: grid;
+    place-items: center;
+    margin: 0 0.5rem;
+}
+
+#assetPrices .asset .asset__logo img {
+    height: 3rem;
+}
+
+#assetPrices .asset .asset__ticker {
+    grid-area: ticker;
+    color: var(--color-alternative);
+    font-size: var(--text-base);
+    line-height: 1.8em;
+}
+
+#assetPrices .asset .asset__price {
+    grid-area: price;
+    color: var(--color-primary);
+    font-size: var(--text-base);
+    line-height: 0.8em;
+}
+
 /* MAIN CONTENT BACKGROUND */
 
 .main-content__background {
@@ -587,6 +645,10 @@ a {
 }
 
 @media screen and (max-width: 991px) {
+    #assetPrices {
+        gap: 1rem;
+    }
+
     .main-content .main-content__banner {
         width: 100vw;
         padding-top: 3rem;
@@ -609,6 +671,11 @@ a {
 }
 
 @media screen and (max-width: 767px) {
+    #assetPrices {
+        height: 12rem;
+        flex-wrap: wrap;
+    }
+
     .main-content .main-content__banner .banner__btns{
         flex-direction: column;
         gap: 2rem;
@@ -633,6 +700,10 @@ a {
     #header .navbar .nav-link__btn {
         padding: 0.4rem 1rem;
         font-size: var(--text-s);
+    }
+
+    #assetPrices {
+        background: transparent;
     }
 
     .main-content__banner button {
