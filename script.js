@@ -1,54 +1,18 @@
 // HEADER DE PRECIOS DE ACTIVOS
 
 const assetPrices = document.getElementById('assetPrices');
-const keyToken = "9a105e96895f672842db646035a5851e0c76fc2d";
-const imgShares = ["https://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png","https://www.pngmart.com/files/10/Tesla-Logo-PNG-Clipart.png"];
-const imgFutures = ["https://cdn-icons-png.flaticon.com/128/6727/6727443.png","https://cdn-icons-png.flaticon.com/512/44/44781.png"];
-const imgCryptos = ["https://cdn-icons-png.flaticon.com/512/25/25180.png","https://assets.stickpng.com/images/5a7593f664538c292dec1bbe.png"];
 
-fetch(`https://api.tiingo.com/iex/?tickers=aapl,tsla&token=${keyToken}`)
+fetch("./json/prices.json")
 .then(respuesta => respuesta.json())
 .then((data) => {
-    data.forEach((asset, index) => {
+    data.forEach((asset) => {
         assetPrices.innerHTML += `
         <div class="asset">
             <picture class="asset__logo">
-                <img src="${imgShares[index]}" alt="">
+                <img src="${asset.img}" alt="">
             </picture>
             <strong class="asset__ticker">${asset.ticker}</strong>
-            <p class="asset__price">${asset.last}</p>
-        </div>
-        `
-    })
-})
-
-fetch(`https://api.tiingo.com/tiingo/fx/top?tickers=xauusd,eurusd&token=${keyToken}`)
-.then(respuesta => respuesta.json())
-.then((data) => {
-    data.forEach((asset, index) => {
-        assetPrices.innerHTML += `
-        <div class="asset">
-            <picture class="asset__logo">
-                <img src="${imgFutures[index]}" alt="">
-            </picture>
-            <strong class="asset__ticker">${asset.ticker.toUpperCase()}</strong>
-            <p class="asset__price">${asset.askPrice}</p>
-        </div>
-        `
-    })
-})
-
-fetch(`https://api.tiingo.com/tiingo/crypto/prices?tickers=btcusd,ethusd&token=${keyToken}`)
-.then(respuesta => respuesta.json())
-.then((data) => {
-    data.forEach((asset, index) => {
-        assetPrices.innerHTML += `
-        <div class="asset">
-            <picture class="asset__logo">
-                <img src="${imgCryptos[index]}" alt="">
-            </picture>
-            <strong class="asset__ticker">${asset.ticker.toUpperCase()}</strong>
-            <p class="asset__price">${asset.priceData[0].close.toFixed(2)}</p>
+            <p class="asset__price">${asset.price}</p>
         </div>
         `
     })
