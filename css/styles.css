@@ -162,9 +162,8 @@ a {
     position: relative;
     height: 5rem;
     padding-right: 0.5rem;
-    /* width: 14rem; */
     border-radius: 1rem;
-    background: var(--color-background);
+    background: #E7E7E7c0;
     display: grid;
     grid-template-areas:
     "logo ticker ticker"
@@ -204,7 +203,7 @@ a {
 /* MAIN CONTENT BACKGROUND */
 
 .main-content__background {
-    background-image: url('../img/backgroundBanner1.jpg');
+    background-image: url('../img/backgroundBanner.jpg');
     background-size: cover;
     background-position: center;
     position: fixed;

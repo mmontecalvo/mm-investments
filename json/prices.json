@@ -2,31 +2,31 @@
     {
         "ticker": "US10Y",
         "price": "3.20%",
-        "img": "https://images.vexels.com/media/users/3/202465/isolated/preview/b9da4e5f4357ecefd2f00b8ce3f7dc54-bandera-americana-negro.png"
+        "img": "./img/assetIcons/bonds.png"
     },
     {
         "ticker": "AAPL",
         "price": 159.07,
-        "img": "https://assets.stickpng.com/images/580b57fcd9996e24bc43c516.png"
+        "img": "./img/assetIcons/aapl.png"
     },
     {
         "ticker": "TSLA",
         "price": 274.84,
-        "img": "https://www.pngmart.com/files/10/Tesla-Logo-PNG-Clipart.png"
+        "img": "./img/assetIcons/tsla.png"
     },
     {
         "ticker": "WTI",
         "price": 89.60,
-        "img": "http://cdn.onlinewebfonts.com/svg/img_356611.png"
+        "img": "./img/assetIcons/wti.png"
     },
     {
         "ticker": "XAUUSD",
         "price": 1712.82,
-        "img": "https://cdn-icons-png.flaticon.com/128/6727/6727443.png"
+        "img": "./img/assetIcons/xauusd.png"
     },
     {
         "ticker": "BTCUSD",
         "price": 20245.86,
-        "img": "https://cdn-icons-png.flaticon.com/512/25/25180.png"
+        "img": "./img/assetIcons/btc.png"
     }
 ]

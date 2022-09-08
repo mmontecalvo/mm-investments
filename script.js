@@ -1,4 +1,4 @@
-// HEADER DE PRECIOS DE ACTIVOS
+// CONSULTA DE PRECIOS DE ACTIVOS DE INVERSIÓN
 
 const assetPrices = document.getElementById('assetPrices');
 
@@ -18,7 +18,7 @@ fetch("./json/prices.json")
     })
 })
 
-// CLASE PARA GENERAR LOS ACTIVOS DE INVERSIÓN
+// GENERO LOS ACTIVOS DE INVERSIÓN Y LOS GUARDO EN UN ARRAY
 
 class Asset {
     constructor(name, takeProfit, stopLoss) {
@@ -28,8 +28,6 @@ class Asset {
     }
 }
 
-// ARRAY DE LOS ACTIVOS DE INVERSIÓN
-
 const assets = [];
 
 assets.push(new Asset("bonos", 2, 0.5));
@@ -37,7 +35,7 @@ assets.push(new Asset("acciones", 10, 2.5));
 assets.push(new Asset("futuros", 20, 5));
 assets.push(new Asset("criptomonedas", 60, 30));
 
-// CLASE PARA CREAR LOS PLANES DE INVERSIÓN PREDEFINIDOS
+// CREO LOS PLANES DE INVERSIÓN PREDEFINIDOS Y LOS GUARDO EN UN ARRAY
 
 class Plan {
     constructor(name, bonds, shares, futures, cryptos){
@@ -58,8 +56,6 @@ class Plan {
         return (this.bonds*assets[0].stopLoss)+(this.shares*assets[1].stopLoss)+(this.futures*assets[2].stopLoss)+(this.cryptos*assets[3].stopLoss)
     }
 }
-
-// ARRAY DE PLANES DE INVERSIÓN PREDEFINIDOS
 
 const plans = [];
 
@@ -95,7 +91,7 @@ function riskCalculator(name, value, time){
     }
 }
 
-// CREACIÓN/CONSULTA DEL STORAGE
+// CREACIÓN/CONSULTA DEL STORAGE PARA AVERIGUAR SI HAY CONSULTAS PERSONALIZADAS PENDIENTES
 
 class Consultation {
     constructor(value, time, tp, sl, bonds, shares, futures, cryptos, result) {
@@ -116,7 +112,7 @@ const consultations =  JSON.parse(localStorage.getItem("consultations")) ?? []
 // GENERACIÓN DE CARDS DE LOS PLANES PREDEFINIDOS
 
 const container = document.getElementById("container");
-const cards =[] // ARRAY PARA GUARDAR EL NOMBRE (ID) DE CADA CARD, PARA LUEGO PODER APLICAR EL forEach()
+const cards =[] // GUARDO EL NOMBRE (ID) DE CADA CARD, PARA LUEGO PODER APLICAR EL forEach()
 
 plans.forEach((card, index) => {
     container.innerHTML += `
@@ -139,7 +135,7 @@ plans.forEach((card, index) => {
     cards.push(`card${index}`)
 })
 
-// FOR PARA GENERAR ALERTA EN LOS BOTONES DE CONFIRMAR OPERACIÓN
+// GENERO ALERTA EN LOS BOTONES DE CONFIRMAR OPERACIÓN
 function btnAlert(array){
     for (let i = 0; i < array.length; i++) {
         array[i].onclick = () => {
@@ -330,6 +326,7 @@ historyBtn.addEventListener('click', () => {
         btnAlert(confirmOp);  
     })
 
+    // FUNCIONALIDAD DEL BOTÓN ELIMINAR
     arrayStorage.forEach((consultation, index) => {
         const historyCard = document.getElementById(`historyCard${index}`)
 
@@ -343,9 +340,9 @@ historyBtn.addEventListener('click', () => {
                 }
             }).showToast();
 
-            historyCard.remove() // DOM
-            consultations.splice(index, 1) // ARRAY
-            localStorage.setItem('consultations', JSON.stringify(consultations)) // LOCAL STORAGE
+            historyCard.remove() // ELIMINAR DEL DOM
+            consultations.splice(index, 1) // ELIMINAR DEL ARRAY
+            localStorage.setItem('consultations', JSON.stringify(consultations)) // ELIMINAR DEL LOCAL STORAGE
         })
     })
 })
