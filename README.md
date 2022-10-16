@@ -1,21 +1,27 @@
-# TaskList App 📝
+# MM Investments 📈💸
 
-Aplicación para generar una lista de tareas a realizar. Dichas tareas pueden ser marcadas, y almacenarse en otra lista de tareas completadas, donde se pueden volver a marcar como pendientes, o borrar definitivamente.
+Sitio web de un fondo de inversiones, creado a modo ilustrativo para el curso de `JavaScript` de `Coderhouse`.
 
 ## Tecnologías utilizadas
 
-Proyecto desarrollado con `React Js`.
-
-Lista de tecnologías utilizadas:
+El proyecto fue desarrollado con:
 
 * JavaScript
+* JSON
 * HTML
-* SASS
-* Material UI
+* CSS
+* Bootstrap
+* Font Awesome
 * SweetAlert2
-* NPM
+* Toastify
 * Github
 
 ## Funcionalidad
 
-Es un proyecto desarrollado 100% en el `front-end`, por lo que al no tener una base de datos, las tareas se almacenan de forma local en el `Local Storage`. Esto significa que las tareas permanecerán guardadas dentro del navegador. Al abrir la aplicación en otro navegador, o en modo incógnito, la lista de tareas aparecerá vacía.
+Es un proyecto desarrollado 100% en el `front-end`, por lo que utilizo un JSON para traer información con fetch a modo de práctica, y el Local Storage para almacenar el historial de consultas.
+
+El sitio consta de una sección de planes predefinidos en los que se puede calcular la ganancia estimada según el dinero y el tiempo que quiera invertir el usuario.
+
+La segunda sección es para que el usuario pueda calcular un plan personalizado, en el que además del dinero y el tiempo, puede definir que porcentaje se invertirá en cada uno de los distintos tipos de activos que componen al plan (Bonos, Acciones, Futuros, Criptomonedas).
+
+Por último existe una sección de Log In, que no tiene funcionalidad ya que no existe un back-end, solo está a modo ilustrativo.
